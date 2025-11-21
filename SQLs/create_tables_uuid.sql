@@ -11,5 +11,10 @@ values
 ('Bob'),
 ('Charlie');
 
-select * from users_uuid_name;
+-- select * from users_uuid_name;
 
+select id_name, name from users_uuid_name;
+
+update users_uuid_name
+set name = 'UpdateName'
+where id_name = '82f1c950-76f8-49da-80c3-c61aaba6b9d1';
