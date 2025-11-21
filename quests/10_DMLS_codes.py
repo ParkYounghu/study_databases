@@ -55,16 +55,12 @@ with conn.cursor() as cursor:
         # ==========================================
         # 📌 문제 3 — READ (SELECT)
         # ==========================================
-        print("\n--- [문제 3] SELECT 결과 ---")
-
         # 1. 전체 조회
-        print("1. 전체 학생 조회:")
         cursor.execute("SELECT * FROM students;")
         for row in cursor.fetchall():
             print(row)
 
         # 2. 나이가 22세 이상인 학생 조회
-        print("\n2. 나이가 22세 이상인 학생:")
         cursor.execute("SELECT * FROM students WHERE age >= 22;")
         for row in cursor.fetchall():
             print(row)
