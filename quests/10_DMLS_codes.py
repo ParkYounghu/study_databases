@@ -7,16 +7,8 @@ db_name = "main_db"
 db_user = "admin"
 db_password = "admin123"
 
-try:
-    conn = psycopg2.connect(
-        host=db_host,
-        port=db_port,
-        dbname=db_name,
-        user=db_user,
-        password=db_password
-    )
     
-    with conn.cursor() as cursor:
+with conn.cursor() as cursor:
         
         # ====================================================================
         # 📌 문제 1 — 테이블 생성 (PRIMARY KEY 기초)
@@ -44,7 +36,7 @@ try:
         # ====================================================================
         # 설명: UUID 컬럼은 정수(1, 2, 3)를 직접 받을 수 없으므로, 
         # ID는 자동생성(DEFAULT) 되도록 두고 이름과 나이만 입력합니다.
-        
+with conn.cursor() as cursor:
         students_data = [
             ('홍길동', 23),
             ('이영희', 21),
@@ -63,6 +55,7 @@ try:
         # 설명: fetchall()을 사용하여 데이터를 가져옵니다.
         
         # 3-1. 전체 데이터 조회
+with conn.cursor() as cursor:
         cursor.execute("SELECT * FROM students;")
         # print(f"전체 조회 결과: {cursor.fetchall()}")
 
@@ -75,7 +68,7 @@ try:
         # print(f"홍길동 조회 결과: {cursor.fetchall()}")
 
         # (조회는 데이터 변경이 아니므로 commit 불필요하지만, 습관상 작성 가능)
-        conn.commit()
+conn.commit()
 
 
         # ====================================================================
@@ -85,6 +78,7 @@ try:
         # 먼저 '이영희'의 실제 UUID를 조회한 뒤 해당 ID로 나이를 수정합니다.
         
         # 1. 이영희의 UUID 찾기
+with conn.cursor() as cursor:
         cursor.execute("SELECT id FROM students WHERE name = '이영희';")
         target_row = cursor.fetchone()
         
@@ -94,7 +88,7 @@ try:
             cursor.execute("UPDATE students SET age = 25 WHERE id = %s;", (target_uuid,))
         
         # 단계별 저장 (Break)
-        conn.commit()
+conn.commit()
 
 
         # ====================================================================
@@ -103,6 +97,7 @@ try:
         # 설명: '박철수'(id=3 가정)를 삭제하기 위해 이름을 통해 UUID를 찾고 삭제합니다.
         
         # 1. 박철수의 UUID 찾기
+with conn.cursor() as cursor:
         cursor.execute("SELECT id FROM students WHERE name = '박철수';")
         target_row = cursor.fetchone()
         
@@ -112,7 +107,7 @@ try:
             cursor.execute("DELETE FROM students WHERE id = %s;", (target_uuid,))
         
         # 단계별 저장 (Break)
-        conn.commit()
+conn.commit()
 
 
 #         # ====================================================================
