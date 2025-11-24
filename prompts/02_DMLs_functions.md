@@ -1,3 +1,7 @@
+### json으로 변경 프롬프트 [Gemini]
+
+```
+
 너는 20년 간 코딩을 한 베테랑 개발자야.
 python 문제를 풀어줘, 문제에 적혀있는 출력 예는 실행 시에 terminal에 출력되는 문자야.
 prompts 폴더 안에 02_DMLs_functions.py 파일로 만들어져서 결과물이 나오게 해주고
@@ -91,3 +95,90 @@ SELECT로 UUID 조회 후 DELETE 수행
 
 ✨ 출력 예
 세 번째 도서가 삭제되었습니다.
+
+```
+
+### CLI prompt
+
+```
+
+{
+  "persona": "You are a veteran developer with 20 years of experience in Python and Database management.",
+  "task": "Create a Python script named '02_DMLs_functions.py' inside the 'prompts' folder to solve PostgreSQL problems using psycopg2.",
+  "constraints": [
+    "Use 'psycopg2' library for database connection.",
+    "Ensure all function calls and execution logic are placed inside 'if __name__ == \"__main__\":'.",
+    "Handle database connections and cursors properly (commit/close).",
+    "Ensure the 'uuid-ossp' extension is enabled for UUID generation if necessary."
+  ],
+  "database_config": {
+    "host": "db_postgresql",
+    "port": "5432",
+    "dbname": "main_db",
+    "user": "admin",
+    "password": "admin123"
+  },
+  "problems": [
+    {
+      "id": 1,
+      "title": "Create Table",
+      "function_name": "create_books_table",
+      "requirements": {
+        "table_name": "books",
+        "columns": [
+          {"name": "id", "type": "UUID PRIMARY KEY DEFAULT uuid_generate_v4()"},
+          {"name": "title", "type": "VARCHAR(100)"},
+          {"name": "price", "type": "INT"}
+        ]
+      },
+      "expected_output": "books 테이블이 생성되었습니다."
+    },
+    {
+      "id": 2,
+      "title": "Insert Data",
+      "function_name": "insert_books",
+      "requirements": "Insert data excluding the ID column (auto-generated).",
+      "data": [
+        {"title": "파이썬 입문", "price": 19000},
+        {"title": "알고리즘 기초", "price": 25000},
+        {"title": "네트워크 이해", "price": 30000}
+      ],
+      "expected_output": "3개 도서가 삽입되었습니다."
+    },
+    {
+      "id": 3,
+      "title": "Select Data",
+      "functions": [
+        {
+          "name": "get_all_books",
+          "description": "Retrieve all records."
+        },
+        {
+          "name": "get_expensive_books",
+          "description": "Retrieve books with price >= 25000."
+        },
+        {
+          "name": "get_book_by_title",
+          "parameter": "title",
+          "description": "Retrieve book where title matches the parameter (e.g., '파이썬 입문')."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Update Data",
+      "function_name": "update_second_book_price",
+      "logic": "Fetch the 2nd book's UUID via SELECT first, then UPDATE its price to 27000.",
+      "expected_output": "두 번째 도서 가격이 27000으로 수정되었습니다."
+    },
+    {
+      "id": 5,
+      "title": "Delete Data",
+      "function_name": "delete_third_book",
+      "logic": "Fetch the 3rd book's UUID via SELECT first, then DELETE it.",
+      "expected_output": "세 번째 도서가 삭제되었습니다."
+    }
+  ]
+}
+
+```
